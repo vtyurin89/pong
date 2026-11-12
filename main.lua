@@ -80,6 +80,10 @@ function love.load()
         ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav', 'static')
     }
 
+    for _, s in pairs(sounds) do
+        s:setVolume(0)
+    end
+
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         resizable = true,
         fullscreen = false,
@@ -247,6 +251,15 @@ function love.update(dt)
         player2.dy = 0
     end
 
+    -- AI
+    if player2.y > ball.y then
+        player2.dy = -PADDLE_SPEED
+    elseif player2.y < ball.y then
+        player2.dy = PADDLE_SPEED
+    else
+        player2.dy = 0
+    end
+    
     -- update our ball based on its DX and DY only if we're in play state;
     -- scale the velocity by dt so movement is framerate-independent
     if gameState == 'play' then

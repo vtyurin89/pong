@@ -242,20 +242,27 @@ function love.update(dt)
         player1.dy = 0
     end
 
-    -- player 2
-    if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
-    else
-        player2.dy = 0
-    end
+    -- -- player 2
+    -- if love.keyboard.isDown('up') then
+    --     player2.dy = -PADDLE_SPEED
+    -- elseif love.keyboard.isDown('down') then
+    --     player2.dy = PADDLE_SPEED
+    -- else
+    --     player2.dy = 0
+    -- end
 
     -- AI
-    if player2.y > ball.y then
-        player2.dy = -PADDLE_SPEED
-    elseif player2.y < ball.y then
-        player2.dy = PADDLE_SPEED
+    local paddleCenter = player2.y + player2.height / 2
+    local ballCenter   = ball.y + ball.height / 2
+    local deadZone = 4
+    local AI_SPEED = PADDLE_SPEED * 0.5
+
+    if ball.x < VIRTUAL_WIDTH / 3 then
+        player2.dy = 0
+    elseif paddleCenter < ballCenter - deadZone then
+        player2.dy = AI_SPEED
+    elseif paddleCenter > ballCenter + deadZone then
+        player2.dy = -AI_SPEED
     else
         player2.dy = 0
     end
